@@ -2,7 +2,7 @@ from flask import Flask
 
 from src.auth import auth
 from src.bookmarks import bookmarks
-from src.database.database import db
+from src.database import db
 
 import os
 

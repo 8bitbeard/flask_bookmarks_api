@@ -3,7 +3,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from src.constants import http_status_codes
 import validators
 
-from src.database.database import User, db
+from src.entities import User
+from src.database import db
+
+# from src.database import User, db
 
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
@@ -61,8 +64,18 @@ def register():
     }), http_status_codes.HTTP_201_CREATED
 
 
-    return "User created"
+@auth.get('/users')
+def get_all():
+    objects = User.query.all()
 
-@auth.get('/me')
-def me():
-    return {"user": "me"}
+    users = []
+
+    for user in objects:
+        users.append({
+            'username': user.username,
+            'email': user.email
+        })
+
+    return jsonify({
+        'users': users
+    })
