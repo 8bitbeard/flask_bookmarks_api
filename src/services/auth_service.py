@@ -1,7 +1,9 @@
+import validators
+
 from flask import jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_jwt_extended import create_access_token, create_refresh_token
 from src.constants import http_status_codes
-import validators
 
 from src.models import User
 from src.database import db
@@ -75,3 +77,40 @@ class AuthService():
                 'email': email
             }
         }), http_status_codes.HTTP_201_CREATED
+
+    def login(data):
+        if 'email' not in data:
+              return jsonify({
+                'error': "Email can't be null!"
+            })
+
+
+        if 'password' not in data:
+            return jsonify({
+                'error': "Password can't be null!"
+            })
+
+        email = data['email']
+        password = data['password']
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            is_pass_correct = check_password_hash(user.password, password)
+
+            if is_pass_correct:
+                access = create_access_token(identity=user.id)
+                refresh = create_refresh_token(identity=user.id)
+
+                return jsonify({
+                    'user': {
+                        'email': user.email,
+                        'username': user.username,
+                        'access_token': access,
+                        'refresh': refresh
+                    }
+                }), http_status_codes.HTTP_200_OK
+
+        return jsonify({
+            'error': 'Wrong credentials'
+        }), http_status_codes.HTTP_401_UNAUTHORIZED
