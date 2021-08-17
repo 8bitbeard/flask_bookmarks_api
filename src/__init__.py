@@ -1,8 +1,9 @@
 from flask import Flask
 
-from src.auth import auth
-from src.bookmarks import bookmarks
 from src.database import db
+
+from src.controllers.auth_controller import auth
+from src.controllers.bookmark_controller import bookmarks
 
 import os
 
