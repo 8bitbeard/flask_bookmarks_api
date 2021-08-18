@@ -70,3 +70,22 @@ class BookmarkService():
             'data': data,
             'meta': meta
         }), http_status_codes.HTTP_200_OK
+
+    def get_one_bookmark(user_id, bookmark_id):
+
+        bookmark = Bookmark.query.filter_by(user_id=user_id, id=bookmark_id).first()
+
+        if not bookmark:
+            return jsonify({
+                'message': 'Item not found'
+            }), http_status_codes.HTTP_404_NOT_FOUND
+
+        return jsonify({
+            'id': bookmark.id,
+            'url': bookmark.url,
+            'short_url': bookmark.short_url,
+            'visits': bookmark.visits,
+            'body': bookmark.body,
+            'created_at': bookmark.created_at,
+            'updated_at': bookmark.updated_at
+        }), http_status_codes.HTTP_200_OK

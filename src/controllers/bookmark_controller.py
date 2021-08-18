@@ -1,3 +1,4 @@
+from threading import current_thread
 from flask import Blueprint, request
 from flask_jwt_extended.view_decorators import jwt_required
 
@@ -21,3 +22,10 @@ def handle_bookmarks():
         return BookmarkService.create_bookmark(data, user_id)
     else:
         return BookmarkService.get_all_bookmarks(user_id, page, size)
+
+@bookmarks.get("/<int:id>")
+@jwt_required()
+def get_bookmark(id):
+    current_user = get_jwt_identity()
+
+    return BookmarkService.get_one_bookmark(current_user, id)
