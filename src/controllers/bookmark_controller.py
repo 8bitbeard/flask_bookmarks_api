@@ -14,7 +14,10 @@ def handle_bookmarks():
     user_id = get_jwt_identity()
     data = request.json
 
+    page = request.args.get('page', 1, type=int)
+    size = request.args.get('size', 5, type=int)
+
     if request.method == 'POST':
         return BookmarkService.create_bookmark(data, user_id)
     else:
-        return BookmarkService.get_all_bookmarks(user_id)
+        return BookmarkService.get_all_bookmarks(user_id, page, size)

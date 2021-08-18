@@ -39,13 +39,13 @@ class BookmarkService():
             'updated_at': bookmark.updated_at
             }), http_status_codes.HTTP_201_CREATED
 
-    def get_all_bookmarks(user_id):
+    def get_all_bookmarks(user_id, page, size):
 
-        bookmarks = Bookmark.query.filter_by(user_id=user_id)
+        bookmarks = Bookmark.query.filter_by(user_id=user_id).paginate(page=page, per_page=size)
 
         data = []
 
-        for bookmark in bookmarks:
+        for bookmark in bookmarks.items:
             data.append({
                 'id': bookmark.id,
                 'url': bookmark.url,
@@ -55,6 +55,18 @@ class BookmarkService():
                 'created_at': bookmark.created_at,
                 'updated_at': bookmark.updated_at
             })
+
+        meta={
+            "page": bookmarks.page,
+            "totalPages": bookmarks.pages,
+            "totalElements": bookmarks.total,
+            "previousPage": bookmarks.prev_num,
+            "nextPage": bookmarks.next_num,
+            "hasNext": bookmarks.has_next,
+            "hasPrev": bookmarks.has_prev,
+            "size": bookmarks.per_page
+        }
         return jsonify({
-            'data': data
+            'data': data,
+            'meta': meta
         }), http_status_codes.HTTP_200_OK
