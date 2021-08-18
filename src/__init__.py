@@ -1,4 +1,5 @@
 from flask import Flask
+from flask.json import jsonify
 
 from flask_jwt_extended import JWTManager
 
@@ -9,6 +10,8 @@ from src.controllers.bookmark_controller import bookmarks
 from src.controllers.url_controller import url
 
 from src.models import Bookmark
+
+from src.constants import http_status_codes
 
 import os
 
@@ -36,14 +39,10 @@ def create_app(test_config=None):
     app.register_blueprint(bookmarks)
     app.register_blueprint(url)
 
-    # @app.get('/<short_url>')
-    # def redirect_to_url(short_url):
-    #     bookmark = Bookmark.query.filter_by(short_url=short_url).first_or_404()
-
-    #     if bookmark:
-    #         bookmark.visits = bookmark.visits + 1
-    #         db.session.commit()
-
-    #         return redirect(bookmark.url)
+    @app.errorhandler(http_status_codes.HTTP_404_NOT_FOUND)
+    def handle_404():
+        return jsonify({
+            'error': 'Not found'
+        }), http_status_codes.HTTP_404_NOT_FOUND
 
     return app
