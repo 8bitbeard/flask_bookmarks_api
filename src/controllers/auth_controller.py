@@ -1,15 +1,10 @@
-from os import access
-from src.constants.http_status_codes import HTTP_207_MULTI_STATUS
 from flask import Blueprint, request, jsonify
-import jwt
-from werkzeug.security import check_password_hash
 
-from src.models import User, user
+from src.models import User
 
 from src.services import AuthService
 
-from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
-from src.constants import http_status_codes
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
