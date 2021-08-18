@@ -44,7 +44,7 @@ def create_app(test_config=None):
         }), http_status_codes.HTTP_404_NOT_FOUND
 
     @app.errorhandler(http_status_codes.HTTP_500_INTERNAL_SERVER_ERROR)
-    def handle_404(e):
+    def handle_500(e):
         return jsonify({
             'error': 'Something went very very bad! We are working on it!!!'
         }), http_status_codes.HTTP_500_INTERNAL_SERVER_ERROR
