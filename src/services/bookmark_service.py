@@ -1,5 +1,6 @@
 from flask.json import jsonify
 import validators
+from validators.url import url
 
 from src.constants import http_status_codes
 
@@ -89,3 +90,26 @@ class BookmarkService():
             'created_at': bookmark.created_at,
             'updated_at': bookmark.updated_at
         }), http_status_codes.HTTP_200_OK
+
+    def edit_one_bookmark(data, user_id, bookmark_id):
+        bookmark = Bookmark.query.filter_by(user_id=user_id, id=bookmark_id).first()
+
+        if not bookmark:
+            return jsonify({
+                'message': 'Item not found'
+            }), http_status_codes.HTTP_404_NOT_FOUND
+
+        if data['url']:
+            if not validators.url(data['url']):
+                return jsonify({
+                    'error': 'Enter a valid url'
+                }), http_status_codes.HTTP_400_BAD_REQUEST
+
+            bookmark.url = data['url']
+
+        if data['body']:
+            bookmark.body = data['body']
+
+        db.session.commit()
+
+        return jsonify({}), http_status_codes.HTTP_204_NO_CONTENT
