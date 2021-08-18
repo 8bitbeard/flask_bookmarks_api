@@ -9,8 +9,6 @@ from src.controllers.auth_controller import auth
 from src.controllers.bookmark_controller import bookmarks
 from src.controllers.url_controller import url
 
-from src.models import Bookmark
-
 from src.constants import http_status_codes
 
 import os
