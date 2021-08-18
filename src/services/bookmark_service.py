@@ -72,7 +72,7 @@ class BookmarkService():
             'meta': meta
         }), http_status_codes.HTTP_200_OK
 
-    def get_one_bookmark(user_id, bookmark_id):
+    def get_bookmark(user_id, bookmark_id):
 
         bookmark = Bookmark.query.filter_by(user_id=user_id, id=bookmark_id).first()
 
@@ -91,7 +91,7 @@ class BookmarkService():
             'updated_at': bookmark.updated_at
         }), http_status_codes.HTTP_200_OK
 
-    def edit_one_bookmark(data, user_id, bookmark_id):
+    def edit_bookmark(data, user_id, bookmark_id):
         bookmark = Bookmark.query.filter_by(user_id=user_id, id=bookmark_id).first()
 
         if not bookmark:
@@ -110,6 +110,19 @@ class BookmarkService():
         if data['body']:
             bookmark.body = data['body']
 
+        db.session.commit()
+
+        return jsonify({}), http_status_codes.HTTP_204_NO_CONTENT
+
+    def delete_bookmark(user_id, bookmark_id):
+        bookmark = Bookmark.query.filter_by(user_id=user_id, id=bookmark_id).first()
+
+        if not bookmark:
+            return jsonify({
+                'message': 'Item not found'
+            }), http_status_codes.HTTP_404_NOT_FOUND
+
+        db.session.delete(bookmark)
         db.session.commit()
 
         return jsonify({}), http_status_codes.HTTP_204_NO_CONTENT

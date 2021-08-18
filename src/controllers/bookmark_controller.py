@@ -27,7 +27,7 @@ def handle_bookmarks():
 def get_bookmark(id):
     current_user = get_jwt_identity()
 
-    return BookmarkService.get_one_bookmark(current_user, id)
+    return BookmarkService.get_bookmark(current_user, id)
 
 @bookmarks.put('/<int:id>')
 @bookmarks.patch('/<int:id>')
@@ -36,4 +36,11 @@ def edit_bookmark(id):
     current_user = get_jwt_identity()
     data = request.json
 
-    return BookmarkService.edit_one_bookmark(data, current_user, id)
+    return BookmarkService.edit_bookmark(data, current_user, id)
+
+@bookmarks.delete('/<int:id>')
+@jwt_required()
+def delete_bookmark(id):
+    current_user = get_jwt_identity()
+
+    return BookmarkService.delete_bookmark(current_user, id)
