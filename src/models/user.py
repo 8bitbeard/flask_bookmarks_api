@@ -10,7 +10,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now())
-    updatedtime_at = db.Column(db.DateTime(), onupdate=datetime.now())
+    updated_at = db.Column(db.DateTime(), onupdate=datetime.now())
     bookmarks = db.relationship('Bookmark', backref="user")
 
     def __repr__(self):

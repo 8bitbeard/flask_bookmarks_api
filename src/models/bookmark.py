@@ -9,13 +9,13 @@ from src.database import db
 class Bookmark(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text, nullable=False)
-    url = db.Column(db.Text, nullable=False)
-    short_url = db.Column(db.String(3), nullable=False)
-    visits = db.Column(db.Integer, nullable=False, default=0)
+    body = db.Column(db.Text, nullable=True)
+    url = db.Column(db.Text, nullable=True)
+    short_url = db.Column(db.String(3))
+    visits = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_at = db.Column(db.DateTime(), default=datetime.now())
-    updatedtime_at = db.Column(db.DateTime(), onupdate=datetime.now())
+    updated_at = db.Column(db.DateTime(), onupdate=datetime.now())
 
     def generate_short_characters(self):
         characters = string.digits+string.ascii_letters
@@ -29,6 +29,8 @@ class Bookmark(db.Model):
             return picked_chars
 
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
         self.short_url = self.generate_short_characters()
 
     def __repr__(self):

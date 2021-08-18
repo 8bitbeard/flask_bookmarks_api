@@ -1,12 +1,15 @@
+from os import access
+from src.constants.http_status_codes import HTTP_207_MULTI_STATUS
 from flask import Blueprint, request, jsonify
+import jwt
 from werkzeug.security import check_password_hash
 
-from src.models import User
+from src.models import User, user
 
 from src.services import AuthService
 
-# from flask_jwt_extended import create_access_token, create_refresh_token
-# from src.constants import http_status_codes
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
+from src.constants import http_status_codes
 
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
@@ -27,31 +30,21 @@ def login():
 
     return AuthService.login(data)
 
-    # email = request.json['email']
-    # password = request.json['password']
 
-    # user = User.query.filter_by(email=email).first()
+@auth.get('/me')
+@jwt_required()
+def me():
+    user_id = get_jwt_identity()
 
-    # if user:
-    #     is_pass_correct = check_password_hash(user.password, password)
+    return AuthService.get_user(user_id)
 
-    #     if is_pass_correct:
-    #         access = create_access_token(identity=user.id)
-    #         refresh = create_refresh_token(identity=user.id)
 
-    #         return jsonify({
-    #             'user': {
-    #                 'email': user.email,
-    #                 'username': user.username,
-    #                 'access_token': access,
-    #                 'refresh': refresh
-    #             }
-    #         })
+@auth.post('/token/refresh')
+@jwt_required(refresh=True)
+def refresh_user_token():
+    user_id = get_jwt_identity()
 
-    # return jsonify({
-    #     'error': 'Wrong credentials'
-    # }), http_status_codes.HTTP_401_UNAUTHORIZED
-
+    return AuthService.refresh_user_token(user_id)
 
 
 @auth.get('/users')

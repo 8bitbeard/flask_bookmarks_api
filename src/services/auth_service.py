@@ -114,3 +114,23 @@ class AuthService():
         return jsonify({
             'error': 'Wrong credentials'
         }), http_status_codes.HTTP_401_UNAUTHORIZED
+
+    def get_user(user_id):
+        user = User.query.filter_by(id=user_id).first()
+
+        if not user:
+            return jsonify({
+                'error': 'User not found!'
+            }), http_status_codes.HTTP_404_NOT_FOUND
+
+        return jsonify({
+            'username': user.username,
+            'email': user.email
+        }), http_status_codes.HTTP_200_OK
+
+    def refresh_user_token(user_id):
+        access = create_access_token(identity=user_id)
+
+        return jsonify({
+            'access_token': access
+        }), http_status_codes.HTTP_200_OK
