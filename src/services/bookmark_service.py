@@ -1,3 +1,4 @@
+from flask import json
 from flask.json import jsonify
 import validators
 from validators.url import url
@@ -126,3 +127,21 @@ class BookmarkService():
         db.session.commit()
 
         return jsonify({}), http_status_codes.HTTP_204_NO_CONTENT
+
+    def get_stats(user_id):
+        bookmarks = Bookmark.query.filter_by(user_id=user_id).all()
+
+        data = []
+
+        for bookmark in bookmarks:
+            new_link = {
+                'visits': bookmark.visits,
+                'url': bookmark.url,
+                'id': bookmark.id,
+                'short_url': bookmark.short_url
+            }
+            data.append(new_link)
+
+        return jsonify({
+            'data': data
+        }), http_status_codes.HTTP_200_OK

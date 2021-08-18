@@ -44,3 +44,11 @@ def delete_bookmark(id):
     current_user = get_jwt_identity()
 
     return BookmarkService.delete_bookmark(current_user, id)
+
+@bookmarks.get('/stats')
+@jwt_required()
+def get_stats():
+    current_user = get_jwt_identity()
+
+    return BookmarkService.get_stats(current_user)
+
