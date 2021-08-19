@@ -1,5 +1,6 @@
 from flask import Flask
 from flask.json import jsonify
+from flask_migrate import Migrate
 
 from flask_jwt_extended import JWTManager
 
@@ -28,6 +29,7 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
+    migrate = Migrate(app, db)
     db.app=app
     db.init_app(app)
 
