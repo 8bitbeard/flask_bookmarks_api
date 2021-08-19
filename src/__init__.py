@@ -1,6 +1,7 @@
 from flask import Flask
 from flask.json import jsonify
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 from flask_jwt_extended import JWTManager
 
@@ -13,6 +14,9 @@ from src.controllers.url_controller import url
 from src.constants import http_status_codes
 
 from src.config import config_by_name
+
+
+db = SQLAlchemy()
 
 
 # def create_app(test_config=None):

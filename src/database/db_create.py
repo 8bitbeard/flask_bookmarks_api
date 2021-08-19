@@ -1,3 +1,3 @@
-from src.database import db
+from src import db
 
 db.create_all()
