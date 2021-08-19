@@ -31,7 +31,7 @@ from src.config import config_by_name
 #     else:
 #         app.config.from_mapping(test_config)
 
-def create_app(config_name='development'):
+def create_app(config_name):
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_by_name[config_name])
