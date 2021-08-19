@@ -3,4 +3,4 @@ import os
 from src import create_app
 
 
-application = create_app(os.getenv['FLASK_ENV'])
+application = create_app(os.environ['FLASK_ENV'])
