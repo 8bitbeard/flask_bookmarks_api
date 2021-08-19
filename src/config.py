@@ -12,7 +12,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'flask_bookmarks_dev.db')
+    SQLALCHEMY_DATABASE_URI = postgres_local_base
     JWT_SECRET_TOKEN=os.environ.get('JWT_SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -28,7 +28,6 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    # uncomment the line below to use postgres
     SQLALCHEMY_DATABASE_URI = postgres_local_base.replace("postgres://", "postgresql://", 1)
 
 
