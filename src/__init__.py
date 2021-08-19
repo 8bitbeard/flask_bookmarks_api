@@ -12,8 +12,6 @@ from src.controllers.url_controller import url
 
 from src.constants import http_status_codes
 
-import os
-
 from src.config import config_by_name
 
 
@@ -31,9 +29,10 @@ from src.config import config_by_name
 #     else:
 #         app.config.from_mapping(test_config)
 
-def create_app(config_name):
+def create_app(config_name='development'):
 
-    app = Flask(__name__, instance_relative_config=True)
+    # app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
     app.config.from_object(config_by_name[config_name])
 
     # if test_config is None:
