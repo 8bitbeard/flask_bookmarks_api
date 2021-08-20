@@ -39,6 +39,7 @@ def create_app(config_name='development'):
     app.config.from_object(config_by_name[config_name])
 
     migrate = Migrate(app, db)
+    app.app_context().push()
     db.app=app
     db.init_app(app)
 
