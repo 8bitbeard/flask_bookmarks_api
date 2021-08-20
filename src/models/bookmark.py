@@ -3,8 +3,7 @@ import random
 
 from datetime import datetime
 
-from src.database import db
-
+from src.models import db
 
 class Bookmark(db.Model):
 
