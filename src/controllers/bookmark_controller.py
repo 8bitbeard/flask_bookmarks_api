@@ -8,6 +8,7 @@ from flask_jwt_extended import get_jwt_identity
 
 bookmarks = Blueprint("bookmarks", __name__, url_prefix="/api/v1/bookmarks")
 
+
 @bookmarks.route('/', methods=['GET', 'POST'])
 @jwt_required()
 def handle_bookmarks():
@@ -22,12 +23,14 @@ def handle_bookmarks():
     else:
         return BookmarkService.get_all_bookmarks(user_id, page, size)
 
+
 @bookmarks.get("/<int:id>")
 @jwt_required()
 def get_bookmark(id):
     current_user = get_jwt_identity()
 
     return BookmarkService.get_bookmark(current_user, id)
+
 
 @bookmarks.put('/<int:id>')
 @bookmarks.patch('/<int:id>')
@@ -38,12 +41,14 @@ def edit_bookmark(id):
 
     return BookmarkService.edit_bookmark(data, current_user, id)
 
+
 @bookmarks.delete('/<int:id>')
 @jwt_required()
 def delete_bookmark(id):
     current_user = get_jwt_identity()
 
     return BookmarkService.delete_bookmark(current_user, id)
+
 
 @bookmarks.get('/stats')
 @jwt_required()

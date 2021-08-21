@@ -9,7 +9,7 @@ from src.models import User
 from src.database import db
 
 
-class AuthService():
+class AuthService:
 
     def save_new_user(data):
         if 'username' not in data:

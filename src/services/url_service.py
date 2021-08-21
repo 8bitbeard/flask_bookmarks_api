@@ -8,7 +8,7 @@ from src.models import Bookmark
 from src.database import db
 
 
-class UrlService():
+class UrlService:
 
     def get_bookmark(short_url):
         bookmark = Bookmark.query.filter_by(short_url=short_url).first_or_404()

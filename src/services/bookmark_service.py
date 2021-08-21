@@ -9,7 +9,7 @@ from src.models import Bookmark
 from src.database import db
 
 
-class BookmarkService():
+class BookmarkService:
 
     def create_bookmark(data, user_id):
 

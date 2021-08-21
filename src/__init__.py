@@ -1,9 +1,11 @@
+import os
+
 from flask import Flask
 from flask.json import jsonify
 
 from flask_jwt_extended import JWTManager
 
-from src.database import db
+from src.database import db, migrate
 
 from src.controllers.auth_controller import auth
 from src.controllers.bookmark_controller import bookmarks
@@ -13,6 +15,8 @@ from src.constants import http_status_codes
 
 from src.config import config_by_name
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+MIGRATION_DIR = os.path.join(basedir, 'database', 'migrations')
 
 
 def create_app(config_name='development'):
@@ -21,8 +25,9 @@ def create_app(config_name='development'):
     app.config.from_object(config_by_name[config_name])
 
     app.app_context().push()
-    db.app=app
+    db.app = app
     db.init_app(app)
+    migrate.init_app(app, db, directory=MIGRATION_DIR)
 
     JWTManager(app)
 
